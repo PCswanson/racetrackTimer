@@ -5,8 +5,8 @@ from datetime import datetime
 from gpiozero import Button
 
 starter_switch = Button(2)
-t1Gate = Button(3)
-t2Gate = Button(4)
+t1Gate = DigitalInputDevice(3)
+t2Gate = DigitalInputDevice(4)
 
 run_number = 1
 t1 = 0
@@ -35,12 +35,14 @@ while True:
     print("Race Begins!")
 
     while t1State == 0 or t2State == 0:
-        if t1Gate.is_pressed:
-            t1State = 1
-            t1 = round(time.perf_counter() - timer,3)
-        if t2Gate.is_pressed:
-            t2State = 1
-            t2 = round(time.perf_counter() - timer, 3)
+        if t1Gate.value:
+            if t1State == 0:
+                t1State = 1
+                t1 = round(time.perf_counter() - timer,3)
+        if t2Gate.value:
+            if t2State == 0:
+                t2State = 1
+                t2 = round(time.perf_counter() - timer, 3)
 
 #check for finish, when each finishes, assign time to track
 
